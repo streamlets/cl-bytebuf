@@ -29,6 +29,7 @@
 
 ;;;; The external protocol
 
+;;; Buffer level operations.
 (defgeneric bytebuf-array (bytebuf)
   (:documentation "Returns the backing byte vector of the buffer. "))
 
@@ -49,6 +50,14 @@
   (:documentation "Returns the number of writable bytes, this is the capacity
   minus the writer index."))
 
+(defgeneric readable-p (bytebuf)
+  (:documentation "Returns the number of readable bytes, or nil if the
+  writer-index minus the reader-index is not greater than zero."))
+
+(defgeneric writable-p (bytebuf)
+  (:documentation "Returns the number of writable bytes, or nil if the capacity
+  minus the writer-index is not greater than zero."))
+
 ;;; Byte level operations.
 (defgeneric get-bytebuf-byte (bytebuf index)
   (:documentation "Returns the byte (as an integer between 0 and 255), at the
@@ -59,14 +68,28 @@ index 0, the last at (capacity bytebuf) - 1."))
   (:documentation "Returns the byte (as an integer between 0 and 255) at the
   current reader-index, and increments the reader index by 1."))
 
-(defgeneric readable-p (bytebuf)
-  (:documentation "Returns the number of readable bytes, or nil if the
-  writer-index minus the reader-index is not greater than zero."))
-
-(defgeneric writable-p (bytebuf)
-  (:documentation "Returns the number of writable bytes, or nil if the capacity
-  minus the writer-index is not greater than zero."))
 
 (defgeneric write-bytebuf-byte (int bytebuf)
   (:documentation "Writes the byte (int between 0 and 255) at the current
   writer-index, and increments the writer-index by one."))
+
+(defgeneric get-bytebuf-bytes (dst buffer &key index dst-index length)
+  (:documentation "Transfers this buffer's data to the destination starting at
+  the specified absolute index. dst-index is the first index to write to, length
+  is the number of bytes to transfer."))
+
+(defgeneric read-bytebuf-bytes (dst buffer &key dst-index length)
+  (:documentation "Transfers the buffer's data to the destination. dst-index is
+  the starting index at the destination, length is the number of bytes. The
+  reader index is incremented by the correct value."))
+
+(defgeneric set-bytebuf-bytes (src buffer &key index src-index length)
+  (:documentation "Transfers the specified source data into this buffer,
+  starting at the specified index. If src-index is provided, data starting from
+  that index is used. Lenght is the number of bytes to transfer."))
+
+
+(defgeneric write-bytebuf-bytes (src buffer &key src-index length)
+  (:documentation "Transfers the specified source bytes into this buffer. If
+  src-index is provided, data starting from that index is used. Length is the
+  number of bytes to transfer."))
