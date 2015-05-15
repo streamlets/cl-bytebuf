@@ -51,13 +51,13 @@
 
 ;;; Byte level operations.
 (defgeneric get-bytebuf-byte (bytebuf index)
-  (:documentation "Returns the byte at the specified absolute index. ByteBuf
-indexing is zero based - The first byte is at index 0, the last at
-(capacity bytebuf) - 1."))
+  (:documentation "Returns the byte (as an integer between 0 and 255), at the
+specified absolute index. ByteBuf indexing is zero based - The first byte is at
+index 0, the last at (capacity bytebuf) - 1."))
 
 (defgeneric read-bytebuf-byte (bytebuf)
-  (:documentation "Returns the byte at the current reader-index, and increments
-  the reader index by 1."))
+  (:documentation "Returns the byte (as an integer between 0 and 255) at the
+  current reader-index, and increments the reader index by 1."))
 
 (defgeneric readable-p (bytebuf)
   (:documentation "Returns the number of readable bytes, or nil if the
@@ -67,6 +67,6 @@ indexing is zero based - The first byte is at index 0, the last at
   (:documentation "Returns the number of writable bytes, or nil if the capacity
   minus the writer-index is not greater than zero."))
 
-(defgeneric write-bytebuf-byte (bytebuf byte)
-  (:documentation "Writes the byte at the current writer-index, and increments
-  the writer-index by one."))
+(defgeneric write-bytebuf-byte (int bytebuf)
+  (:documentation "Writes the byte (int between 0 and 255) at the current
+  writer-index, and increments the writer-index by one."))
